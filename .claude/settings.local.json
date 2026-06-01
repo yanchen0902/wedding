@@ -10,7 +10,8 @@
       "Bash(git push *)",
       "Bash(ls ~/.ssh/*.pub 2>/dev/null || echo \"no SSH keys found\")",
       "Read(//Users/annychen/**)",
-      "Bash(ssh -T git@github.com)"
+      "Bash(ssh -T git@github.com)",
+      "Bash(git config *)"
     ]
   }
 }
