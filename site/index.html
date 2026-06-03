@@ -978,9 +978,6 @@ html, body {
    page reflows cleanly down to ~320px.
    ========================================================== */
 
-/* The mobile portraits footer is hidden on desktop (in-grid caption shows there) */
-.pg-caption-mobile { display: none; }
-
 /* Smooth horizontal behavior + prevent accidental sideways scroll */
 html, body { overflow-x: hidden; }
 .invite { overflow-x: clip; }
@@ -1088,23 +1085,6 @@ html, body { overflow-x: hidden; }
     text-align: left !important;
     max-width: 100% !important;
   }
-
-  /* ---------- PORTRAITS ---------- */
-  /* Editorial mosaic → simple 2-up grid of 4:5 tiles on phones */
-  .invite .portraits-grid {
-    grid-template-columns: 1fr 1fr !important;
-    grid-template-rows: none !important;
-    grid-auto-rows: auto !important;
-    gap: 10px !important;
-  }
-  .portraits-grid > .photo-lift {
-    grid-column: auto !important;
-    grid-row: auto !important;
-    aspect-ratio: 4 / 5;
-  }
-  /* in-grid caption hidden on phones; the footer version shows instead */
-  .pg-caption { display: none !important; }
-  .pg-caption-mobile { display: block !important; }
 
   /* ---------- RSVP closer ---------- */
   .section-head h2 { font-size: 40px !important; }
@@ -1397,62 +1377,23 @@ function WeddingPortraits() {
   ];
   return (
     <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-      {/* Editorial mosaic on desktop (12-col), collapses to 2-up on mobile via responsive.css */}
+      {/* auto-fit grid: reflows from 4-up (desktop) → 2-up (tablet) →
+          1-up (phone) purely by container width — no media queries. */}
       <div className="portraits-grid" style={{
         display: "grid",
-        gridTemplateColumns: "repeat(12, 1fr)",
-        gridAutoRows: "120px",
+        gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
         gap: 16,
       }}>
-        <div className="photo-lift pg-0" style={{ gridColumn: "1 / 7", gridRow: "1 / 5" }}>
-          <div className="photo-real" style={frame(shots[0][0], shots[0][1])} />
-        </div>
-        <div className="photo-lift pg-1" style={{ gridColumn: "7 / 10", gridRow: "1 / 3" }}>
-          <div className="photo-real" style={frame(shots[1][0], shots[1][1])} />
-        </div>
-        <div className="photo-lift pg-2" style={{ gridColumn: "10 / 13", gridRow: "1 / 4" }}>
-          <div className="photo-real" style={frame(shots[2][0], shots[2][1])} />
-        </div>
-        <div className="photo-lift pg-3" style={{ gridColumn: "7 / 10", gridRow: "3 / 5" }}>
-          <div className="photo-real" style={frame(shots[3][0], shots[3][1])} />
-        </div>
-        <div className="photo-lift pg-4" style={{ gridColumn: "10 / 13", gridRow: "4 / 6" }}>
-          <div className="photo-real" style={frame(shots[4][0], shots[4][1])} />
-        </div>
-        <div className="photo-lift pg-5" style={{ gridColumn: "1 / 7", gridRow: "5 / 7" }}>
-          <div className="photo-real" style={frame(shots[5][0], shots[5][1])} />
-        </div>
-        <div className="pg-caption" style={{
-          gridColumn: "7 / 13", gridRow: "6 / 7",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          padding: "0 32px",
-          textAlign: "center",
-          borderTop: "1px solid var(--rule)",
-          borderBottom: "1px solid var(--rule)",
-        }}>
-          <div>
-            <div style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 10, letterSpacing: "0.32em",
-              color: "var(--sage-deep)", textTransform: "uppercase",
-              marginBottom: 8,
-            }}>
-              Six frames · MMXXVI
-            </div>
-            <div className="tc" style={{
-              fontFamily: "var(--tc)",
-              fontSize: 18, letterSpacing: "0.16em",
-              color: "var(--ink)",
-            }}>
-              邱鈺皓 ＆ 陳映安
-            </div>
+        {shots.map(([src, pos], i) => (
+          <div key={i} className="photo-lift" style={{ aspectRatio: "4 / 5" }}>
+            <div className="photo-real" style={frame(src, pos)} />
           </div>
-        </div>
+        ))}
       </div>
-      {/* Mobile-only caption footer (the in-grid caption is hidden on phones) */}
-      <div className="pg-caption-mobile" style={{
-        marginTop: 28,
-        paddingTop: 24,
+      {/* caption footer */}
+      <div style={{
+        marginTop: 36,
+        paddingTop: 28,
         borderTop: "1px solid var(--rule)",
         textAlign: "center",
       }}>
