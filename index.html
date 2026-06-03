@@ -1010,44 +1010,70 @@ html, body { overflow-x: hidden; }
 @media (max-width: 640px) {
   .section { padding: 56px 22px !important; }
 
-  /* ---------- HERO ---------- */
+  /* ---------- HERO — stacked layout: photo top, card bottom ---------- */
   .hero-center {
     height: auto !important;
-    min-height: 100svh !important;
+    min-height: unset !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
-  /* Masthead: keep only the centered monogram, drop the side kickers */
+
+  /* Photo zone: fixed 55vh tall, photo fills it */
+  .hero-photo-fade {
+    position: relative !important;
+    height: 55vmax !important;
+    max-height: 65vh !important;
+    min-height: 280px !important;
+    flex-shrink: 0 !important;
+  }
+  .hero-photo-layer {
+    position: absolute !important;
+    inset: 0 !important;
+  }
+  .hero-vignette {
+    position: absolute !important;
+    inset: 0 !important;
+  }
+
+  /* Masthead: hide side kickers, keep monogram */
   .hero-masthead {
-    padding: 20px 22px !important;
+    position: absolute !important;
+    top: 0 !important; left: 0 !important; right: 0 !important;
+    padding: 16px 22px !important;
     justify-content: center !important;
+    z-index: 4 !important;
   }
   .hero-masthead > span:first-child,
   .hero-masthead > span:last-child { display: none !important; }
 
-  /* Plate: full-width centered card instead of left-anchored 480px panel */
+  /* Plate: pull out of absolute positioning, sit below photo */
   .hero-plate-pos {
-    left: 0 !important;
-    right: 0 !important;
-    top: 0 !important;
-    bottom: 0 !important;
+    position: relative !important;
+    top: unset !important; bottom: unset !important;
+    left: unset !important; right: unset !important;
+    display: flex !important;
     justify-content: center !important;
-    padding: 96px 22px 88px !important;
+    padding: 32px 22px 40px !important;
+    background: var(--ivory) !important;
+    z-index: 2 !important;
   }
   .hero-plate {
+    position: relative !important;
     width: 100% !important;
     max-width: 420px !important;
-    padding: 40px 28px !important;
+    padding: 36px 28px !important;
+    background: var(--ivory) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid var(--rule) !important;
+    box-shadow: none !important;
   }
   .hero-plate h1 { font-size: 46px !important; }
   .hero-plate h1 > span:nth-child(2) { font-size: 32px !important; }
   .hero-plate h2 { font-size: 14px !important; letter-spacing: 0.28em !important; }
 
-  /* Bottom captions: just the centered scroll hint */
-  .hero-captions {
-    padding: 18px 22px !important;
-    justify-content: center !important;
-  }
-  .hero-captions > span:first-child,
-  .hero-captions > span:last-child { display: none !important; }
+  /* Bottom captions: hide on mobile */
+  .hero-captions { display: none !important; }
 
   /* ---------- HEADINGS ---------- */
   .invite h1 { font-size: 40px !important; }
